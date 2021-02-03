@@ -1,15 +1,17 @@
 <?php
 
-namespace NotificationChannels\:channel_namespace;
+namespace Sykez\GenusisSms;
 
-use NotificationChannels\:channel_namespace\Exceptions\CouldNotSendNotification;
+use Sykez\GenusisSms\Exceptions\CouldNotSendNotification;
 use Illuminate\Notifications\Notification;
 
-class :service_nameChannel
+class GenusisSmsChannel
 {
-    public function __construct()
+    protected $client;
+
+    public function __construct(GenusisGensuiteClient $client)
     {
-        // Initialisation code here
+        $this->client = $client;
     }
 
     /**
@@ -27,5 +29,19 @@ class :service_nameChannel
 //        if ($response->error) { // replace this by the code need to check for errors
 //            throw CouldNotSendNotification::serviceRespondedWithAnError($response);
 //        }
+
+        $message = $notification->toSms($notifiable);
+        // dd($message);
+
+        if (is_string($message)) {
+            $message = new GenusisSmsMessage($message);
+        }
+
+        if ($to = $notifiable->routeNotificationFor('sms')) {
+            // dd($to);
+            $message->to($to);
+        }
+
+        return $this->client->send($message);
     }
 }
