@@ -1,0 +1,32 @@
+{
+    "name": "sykez/genusis-sms",
+    "description": "Genusis Gensuite v10 API SMS Channel for Laravel.",
+    "homepage": "https://github.com/sykezz/genusis-sms",
+    "license": "MIT",
+    "keywords": ["genusis", "gensuite", "laravel", "sms", "channel", "notification"],
+    "authors": [
+        {
+            "name": "sykez",
+            "email": "hello@sykez.com"
+        }
+    ],
+    "require": {
+		"php": "^7.2",
+		"guzzlehttp/guzzle": "^6.3",
+        "illuminate/notifications": "~5.7",
+        "illuminate/support": "~5.7"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Sykez\\GenusisSms\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sykez\\GenusisSms\\GenusisSmsServiceProvider"
+            ]
+        }
+    }
+}
