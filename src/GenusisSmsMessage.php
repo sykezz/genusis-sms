@@ -9,38 +9,49 @@ class GenusisSmsMessage
      *
      * @var string
      */
-    public $content, $to;
+    public $content;
+
+    /**
+     * Recipient
+     *
+     * @var mixed
+     */
+    public $to;
+
     /**
      * Create a new message instance.
      *
      * @param   string $message
      * @return  void
      */
-    public function __construct($content = '')
+    public function __construct(string $content = '')
     {
         $this->content = $content;
     }
+
     /**
      * Set the message content.
      *
      * @param  string $content
      * @return $this
      */
-    public function content($content)
+    public function content(string $content)
     {
         $this->content = $content;
 
         return $this;
     }
-    
+
     /**
      * to
      *
      * @param  mixed $to
-     * @return void
+     * @return $this
      */
-    public function to($to)
+    public function to(int $to)
     {
-        return $this->to = $to;
+        $this->to = $to;
+
+        return $this;
     }
 }

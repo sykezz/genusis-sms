@@ -2,19 +2,22 @@
 
 namespace Sykez\GenusisSms;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Sykez\GenusisSms\Exceptions\CouldNotSendNotification;
 
 class GenusisGensuiteClient
 {
-    protected $clientid, $username, $privatekey, $url;
+    protected $clientid, $username, $privatekey, $url, $debug_log;
 
-    public function __construct(string $clientid, string $username, string $privatekey, string $url)
+    public function __construct(string $clientid, string $username, string $privatekey, string $url, ?bool $debug_log = false)
     {
         $this->clientid = $clientid;
         $this->username = $username;
-        $this->privatekey = $privatekey.'0';
+        $this->privatekey = $privatekey;
         $this->url = $url;
+        $this->debug_log = $debug_log;
     }
 
     public function send(GenusisSmsMessage $message)
@@ -26,7 +29,7 @@ class GenusisGensuiteClient
                 'SEND' => [
                     [
                         'Media' => 'SMS',
-                        'Message' => 'RM0 '.$message->content,
+                        'Message' => 'RM0 ' . $message->content,
                         'MessageType' => 'S',
                         'Priority' => '1',
                         'Destination' => [
@@ -38,14 +41,28 @@ class GenusisGensuiteClient
                 ]
             ]
         ];
-
         $hash = md5(json_encode($json) . $this->privatekey);
-        $response = Http::withOptions([
-            'debug' => fopen('php://stderr', 'w'),
-        ])->post($this->url . '?Key=' .$hash, $json);
 
-        Log::info("SMS Sent", ['response' => $response, 'status' => $response->status(), 'body' => $response->json()]);
+        try {
+            $response = Http::post($this->url . '?Key=' . $hash, $json)->throw();
+            $body = $response->json();
+            $log = ['status' => $response->status(), 'response' => $response->json(), 'request_json' => $json];
+
+            if (!isset($body['DigitalMedia']) || $body['DigitalMedia'] == '') {
+                throw new Exception('blank');
+            }
+
+            if ($body['DigitalMedia'] !== 'success') {
+                throw new Exception($body['DigitalMedia']);
+            }
+        } catch (Exception $e) {
+            throw CouldNotSendNotification::gensuiteRespondedWithAnError($e, $this->debug_log ? $log : null);
+        }
+
+        if ($this->debug_log) {
+            Log::info("SMS Sent", $log);
+        }
+
         return $response;
     }
-
 }

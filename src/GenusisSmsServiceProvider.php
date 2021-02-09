@@ -19,12 +19,13 @@ class GenusisSmsServiceProvider extends ServiceProvider
                 if (is_null(config('services.genusis-sms'))) {
                     throw InvalidConfiguration::configNotSet();
                 }
-                // dd(config('services.genusis-sms'));
+
                 return new GenusisGensuiteClient(
                     config('services.genusis-sms.client_id'),
                     config('services.genusis-sms.username'),
                     config('services.genusis-sms.private_key'),
-                    config('services.genusis-sms.url')
+                    config('services.genusis-sms.url'),
+                    config('services.genusis-sms.debug_log')
                 );
             });
     }
