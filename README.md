@@ -1,8 +1,8 @@
 # Genusis SMS Gateway (Gensuite API) Notification Channel for Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/:package_name.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/:package_name)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/sykez/genusis-sms.svg?style=flat-square)](https://packagist.org/packages/sykez/genusis-sms)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/:package_name.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/:package_name)
+[![Total Downloads](https://img.shields.io/packagist/dt/sykez/genusis-sms.svg?style=flat-square)](https://packagist.org/packages/sykez/genusis-sms)
 
 This package makes it easy to send notifications using [Genusis SMS Gateway](https://genusis.com/) via Gensuite API with Laravel.
 
