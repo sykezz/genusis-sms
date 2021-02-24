@@ -16,7 +16,10 @@ class GenusisSmsServiceProvider extends ServiceProvider
             ->needs(GenusisGensuiteClient::class)
             ->give(function () {
 
-                if (is_null(config('services.genusis-sms'))) {
+                if (empty(config('services.genusis-sms.client_id')) ||
+                    empty(config('services.genusis-sms.username')) ||
+                    empty(config('services.genusis-sms.private_key')) ||
+                    empty(config('services.genusis-sms.url'))) {
                     throw InvalidConfiguration::configNotSet();
                 }
 

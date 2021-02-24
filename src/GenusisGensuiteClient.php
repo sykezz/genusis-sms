@@ -52,8 +52,12 @@ class GenusisGensuiteClient
                 throw new Exception('blank');
             }
 
-            if ($body['DigitalMedia'] !== 'success') {
-                throw new Exception($body['DigitalMedia']);
+            if (isset($body['DigitalMedia'][0]['Result'])) {
+                if ($body['DigitalMedia'][0]['Result'] !== 'success') {
+                    throw new Exception($body['DigitalMedia'][0]['Result']);
+                }
+            } else {
+                throw new Exception('Unknown error returned from API: '.json_encode($body));
             }
         } catch (Exception $e) {
             throw CouldNotSendNotification::gensuiteRespondedWithAnError($e, $this->debug_log ? $log : null);
