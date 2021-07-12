@@ -42,6 +42,7 @@ class GenusisGensuiteClient
             ]
         ];
         $hash = md5(json_encode($json) . $this->privatekey);
+        $log = null;
 
         try {
             $response = Http::post($this->url . '?Key=' . $hash, $json)->throw();
